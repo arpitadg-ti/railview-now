@@ -108,5 +108,67 @@ export const mockTrains = [
       { station_name: "Mathura Junction", station_code: "MTJ", arrival_time: "08:30", departure_time: "08:32", distance_km: 1252, platform: "6", sequence_number: 6 },
       { station_name: "New Delhi", station_code: "NDLS", arrival_time: "10:10", departure_time: null, distance_km: 1384, platform: "11", sequence_number: 7 }
     ]
+  },
+  {
+    train_number: "30311",
+    train_name: "Sealdah-Naihati Local",
+    from_station: "Sealdah",
+    to_station: "Naihati",
+    current_station: "Dum Dum Junction",
+    next_station: "Belgharia",
+    current_lat: 22.6277,
+    current_lng: 88.4171,
+    delay_minutes: 0,
+    status: "on-time",
+    route: [
+      { station_name: "Sealdah", station_code: "SDAH", arrival_time: null, departure_time: "08:15", distance_km: 0, platform: "12", sequence_number: 1 },
+      { station_name: "Dum Dum Junction", station_code: "DDJ", arrival_time: "08:28", departure_time: "08:30", distance_km: 8, platform: "2", sequence_number: 2 },
+      { station_name: "Belgharia", station_code: "BLH", arrival_time: "08:35", departure_time: "08:36", distance_km: 11, platform: "1", sequence_number: 3 },
+      { station_name: "Agarpara", station_code: "AGP", arrival_time: "08:41", departure_time: "08:42", distance_km: 14, platform: "1", sequence_number: 4 },
+      { station_name: "Sodpur", station_code: "SEP", arrival_time: "08:47", departure_time: "08:48", distance_km: 17, platform: "2", sequence_number: 5 },
+      { station_name: "Khardaha", station_code: "KHA", arrival_time: "08:53", departure_time: "08:54", distance_km: 21, platform: "1", sequence_number: 6 },
+      { station_name: "Halisahar", station_code: "HLS", arrival_time: "09:00", departure_time: "09:01", distance_km: 25, platform: "1", sequence_number: 7 },
+      { station_name: "Naihati", station_code: "NH", arrival_time: "09:08", departure_time: null, distance_km: 30, platform: "3", sequence_number: 8 }
+    ]
+  },
+  {
+    train_number: "30411",
+    train_name: "Howrah-Bandel Local",
+    from_station: "Howrah Junction",
+    to_station: "Bandel Junction",
+    current_station: "Bally",
+    next_station: "Belur",
+    current_lat: 22.6533,
+    current_lng: 88.3396,
+    delay_minutes: 2,
+    status: "delayed",
+    route: [
+      { station_name: "Howrah Junction", station_code: "HWH", arrival_time: null, departure_time: "09:00", distance_km: 0, platform: "18", sequence_number: 1 },
+      { station_name: "Bally", station_code: "BLY", arrival_time: "09:07", departure_time: "09:08", distance_km: 4, platform: "1", sequence_number: 2 },
+      { station_name: "Belur", station_code: "BEQ", arrival_time: "09:12", departure_time: "09:13", distance_km: 7, platform: "1", sequence_number: 3 },
+      { station_name: "Liluah", station_code: "LLH", arrival_time: "09:18", departure_time: "09:19", distance_km: 10, platform: "2", sequence_number: 4 },
+      { station_name: "Naihati", station_code: "NH", arrival_time: "09:35", departure_time: "09:36", distance_km: 28, platform: "4", sequence_number: 5 },
+      { station_name: "Bandel Junction", station_code: "BDC", arrival_time: "09:55", departure_time: null, distance_km: 42, platform: "2", sequence_number: 6 }
+    ]
+  },
+  {
+    train_number: "34711",
+    train_name: "Sealdah-Diamond Harbor Local",
+    from_station: "Sealdah",
+    to_station: "Diamond Harbor",
+    current_station: "Ballygunge Junction",
+    next_station: "Park Circus",
+    current_lat: 22.5326,
+    current_lng: 88.3657,
+    delay_minutes: 0,
+    status: "on-time",
+    route: [
+      { station_name: "Sealdah", station_code: "SDAH", arrival_time: null, departure_time: "10:30", distance_km: 0, platform: "9", sequence_number: 1 },
+      { station_name: "Ballygunge Junction", station_code: "BGB", arrival_time: "10:38", departure_time: "10:39", distance_km: 5, platform: "3", sequence_number: 2 },
+      { station_name: "Park Circus", station_code: "PQS", arrival_time: "10:42", departure_time: "10:43", distance_km: 7, platform: "1", sequence_number: 3 },
+      { station_name: "Majerhat", station_code: "MJT", arrival_time: "10:50", departure_time: "10:51", distance_km: 11, platform: "2", sequence_number: 4 },
+      { station_name: "Sonarpur Junction", station_code: "SPR", arrival_time: "11:10", departure_time: "11:11", distance_km: 25, platform: "1", sequence_number: 5 },
+      { station_name: "Diamond Harbor", station_code: "DHH", arrival_time: "12:05", departure_time: null, distance_km: 53, platform: "1", sequence_number: 6 }
+    ]
   }
 ];
