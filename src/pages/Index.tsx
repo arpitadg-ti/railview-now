@@ -1,8 +1,28 @@
-import { Train } from 'lucide-react';
-import TrainSearch from '@/components/TrainSearch';
-import InitializeData from '@/components/InitializeData';
+import { Train, Clock, MapPin } from "lucide-react";
+import TrainSearch from "@/components/TrainSearch";
+import InitializeData from "@/components/InitializeData";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
+  
+  const { data: trains, isLoading } = useQuery({
+    queryKey: ['trains'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('trains')
+        .select('*')
+        .order('train_number');
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
   return (
     <>
       <InitializeData />
@@ -29,8 +49,59 @@ const Index = () => {
         <TrainSearch />
       </div>
 
+      {/* Available Trains Section */}
+      <div className="container mx-auto px-4 py-12 max-w-6xl">
+        <h2 className="text-2xl font-bold text-foreground mb-6">Available Trains</h2>
+        
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[...Array(6)].map((_, i) => (
+              <Card key={i} className="animate-pulse">
+                <CardHeader className="h-24 bg-muted"></CardHeader>
+                <CardContent className="h-32 bg-muted/50"></CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {trains?.map((train) => (
+              <Card 
+                key={train.id} 
+                className="cursor-pointer hover:shadow-lg transition-shadow border-border/50"
+                onClick={() => navigate(`/train/${train.train_number}`)}
+              >
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <span className="text-lg">{train.train_name}</span>
+                    <Badge variant={train.status === 'on-time' ? 'default' : 'destructive'}>
+                      {train.status === 'on-time' ? 'On Time' : `Delayed ${train.delay_minutes}m`}
+                    </Badge>
+                  </CardTitle>
+                  <p className="text-sm text-muted-foreground font-mono">{train.train_number}</p>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="flex items-start gap-2 text-sm">
+                    <MapPin className="h-4 w-4 mt-0.5 text-primary" />
+                    <div>
+                      <p className="font-medium">{train.from_station}</p>
+                      <p className="text-muted-foreground">to {train.to_station}</p>
+                    </div>
+                  </div>
+                  {train.current_station && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Clock className="h-4 w-4" />
+                      <p>Currently at: <span className="font-medium text-foreground">{train.current_station}</span></p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Features Section */}
-      <div className="container mx-auto px-4 py-16 max-w-6xl">
+      <div className="container mx-auto px-4 py-16 max-w-6xl border-t">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center p-6">
             <div className="p-3 bg-primary/10 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
