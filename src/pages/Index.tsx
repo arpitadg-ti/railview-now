@@ -1,4 +1,6 @@
-import { Train, Clock, MapPin } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Train, Clock, MapPin, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import TrainSearch from "@/components/TrainSearch";
 import InitializeData from "@/components/InitializeData";
 import { useQuery } from "@tanstack/react-query";
@@ -6,8 +8,22 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
+
 const Index = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
   const {
     data: trains,
     isLoading
@@ -25,6 +41,28 @@ const Index = () => {
   return <>
       <InitializeData />
       <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <Train className="h-6 w-6 text-railway-blue" />
+            <span className="font-bold text-xl">Track My Way</span>
+          </div>
+          <div className="flex items-center gap-2">
+            {user ? (
+              <Button onClick={() => navigate("/dashboard")} variant="outline">
+                <User className="h-4 w-4 mr-2" />
+                Dashboard
+              </Button>
+            ) : (
+              <Button onClick={() => navigate("/auth")}>
+                Sign In / Sign Up
+              </Button>
+            )}
+          </div>
+        </div>
+      </header>
+      
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground py-16 px-4 bg-yellow-400">
         <div className="container mx-auto max-w-4xl text-center">
@@ -33,7 +71,7 @@ const Index = () => {
               <Train className="h-12 w-12" />
             </div>
           </div>
-          <h1 className="text-4xl mb-4 text-gray-50 md:text-5xl font-bold">​Track My Way
+          <h1 className="text-4xl mb-4 text-gray-50 md:text-5xl font-bold">Track My Way
           </h1>
           <p className="text-lg md:text-xl text-primary-foreground/90 mb-8">
             Track any Indian Railway train in real-time with accurate location and schedule information

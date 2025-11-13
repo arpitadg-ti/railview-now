@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Clock, MapPin, Navigation, Train as TrainIcon } from 'lucide-react';
+import { ArrowLeft, Clock, MapPin, Navigation, Train as TrainIcon, Heart, HeartOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import TrainMap from '@/components/TrainMap';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { toast as sonnerToast } from 'sonner';
 
 interface Train {
   id: string;
@@ -41,6 +42,21 @@ const TrainDetail = () => {
   const [train, setTrain] = useState<Train | null>(null);
   const [route, setRoute] = useState<RouteStation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
+  const [isSaved, setIsSaved] = useState(false);
+  const [savedTrainId, setSavedTrainId] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const fetchTrainDetails = async () => {
@@ -64,6 +80,21 @@ const TrainDetail = () => {
 
         if (routeError) throw routeError;
         setRoute(routeData || []);
+
+        // Check if train is saved by current user
+        if (user) {
+          const { data: savedData } = await supabase
+            .from('saved_trains')
+            .select('id')
+            .eq('user_id', user.id)
+            .eq('train_id', trainData.id)
+            .single();
+          
+          if (savedData) {
+            setIsSaved(true);
+            setSavedTrainId(savedData.id);
+          }
+        }
 
       } catch (error) {
         console.error('Error fetching train details:', error);
@@ -100,7 +131,51 @@ const TrainDetail = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [trainNo, toast]);
+  }, [trainNo, toast, user]);
+
+  const handleToggleSave = async () => {
+    if (!user) {
+      sonnerToast.error("Please sign in to save trains");
+      navigate("/auth");
+      return;
+    }
+
+    if (!train) return;
+
+    try {
+      if (isSaved && savedTrainId) {
+        // Remove from saved
+        const { error } = await supabase
+          .from('saved_trains')
+          .delete()
+          .eq('id', savedTrainId);
+
+        if (error) throw error;
+        setIsSaved(false);
+        setSavedTrainId(null);
+        sonnerToast.success("Train removed from saved list");
+      } else {
+        // Add to saved
+        const { data, error } = await supabase
+          .from('saved_trains')
+          .insert({
+            user_id: user.id,
+            train_id: train.id,
+            notification_enabled: true
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+        setIsSaved(true);
+        setSavedTrainId(data.id);
+        sonnerToast.success("Train saved! You'll receive delay notifications.");
+      }
+    } catch (error) {
+      console.error('Error toggling save:', error);
+      sonnerToast.error("Failed to update saved trains");
+    }
+  };
 
   if (loading) {
     return (
@@ -149,12 +224,22 @@ const TrainDetail = () => {
                 {train.from_station} → {train.to_station}
               </p>
             </div>
-            <Badge 
-              variant={train.status === 'on-time' ? 'default' : 'destructive'}
-              className={`text-lg px-4 py-2 ${train.status === 'on-time' ? 'bg-success' : ''}`}
-            >
-              {train.status === 'on-time' ? 'On Time' : `Delayed ${train.delay_minutes}m`}
-            </Badge>
+            <div className="flex gap-2">
+              <Badge 
+                variant={train.status === 'on-time' ? 'default' : 'destructive'}
+                className={`text-lg px-4 py-2 ${train.status === 'on-time' ? 'bg-success' : ''}`}
+              >
+                {train.status === 'on-time' ? 'On Time' : `Delayed ${train.delay_minutes}m`}
+              </Badge>
+              <Button
+                variant={isSaved ? "default" : "outline"}
+                size="lg"
+                onClick={handleToggleSave}
+              >
+                {isSaved ? <Heart className="h-5 w-5 mr-2 fill-current" /> : <HeartOff className="h-5 w-5 mr-2" />}
+                {isSaved ? "Saved" : "Save Train"}
+              </Button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">

@@ -170,5 +170,81 @@ export const mockTrains = [
       { station_name: "Sonarpur Junction", station_code: "SPR", arrival_time: "11:10", departure_time: "11:11", distance_km: 25, platform: "1", sequence_number: 5 },
       { station_name: "Diamond Harbor", station_code: "DHH", arrival_time: "12:05", departure_time: null, distance_km: 53, platform: "1", sequence_number: 6 }
     ]
+  },
+  {
+    train_number: "34511",
+    train_name: "Sealdah-Canning Local",
+    from_station: "Sealdah",
+    to_station: "Canning",
+    current_station: "Sonarpur Junction",
+    next_station: "Baruipur",
+    current_lat: 22.4397,
+    current_lng: 88.3731,
+    delay_minutes: 3,
+    status: "delayed",
+    route: [
+      { station_name: "Sealdah", station_code: "SDAH", arrival_time: null, departure_time: "11:00", distance_km: 0, platform: "10", sequence_number: 1 },
+      { station_name: "Ballygunge Junction", station_code: "BGB", arrival_time: "11:08", departure_time: "11:09", distance_km: 5, platform: "2", sequence_number: 2 },
+      { station_name: "Sonarpur Junction", station_code: "SPR", arrival_time: "11:40", departure_time: "11:42", distance_km: 25, platform: "2", sequence_number: 3 },
+      { station_name: "Baruipur", station_code: "BRP", arrival_time: "11:55", departure_time: "11:56", distance_km: 35, platform: "1", sequence_number: 4 },
+      { station_name: "Canning", station_code: "CG", arrival_time: "12:15", departure_time: null, distance_km: 48, platform: "1", sequence_number: 5 }
+    ]
+  },
+  {
+    train_number: "30211",
+    train_name: "Sealdah-Barasat Local",
+    from_station: "Sealdah",
+    to_station: "Barasat",
+    current_station: "Bidhannagar Road",
+    next_station: "New Barrackpur",
+    current_lat: 22.6489,
+    current_lng: 88.4475,
+    delay_minutes: 0,
+    status: "on-time",
+    route: [
+      { station_name: "Sealdah", station_code: "SDAH", arrival_time: null, departure_time: "09:00", distance_km: 0, platform: "15", sequence_number: 1 },
+      { station_name: "Dum Dum", station_code: "DDJ", arrival_time: "09:13", departure_time: "09:14", distance_km: 8, platform: "3", sequence_number: 2 },
+      { station_name: "Bidhannagar Road", station_code: "BNXR", arrival_time: "09:25", departure_time: "09:26", distance_km: 15, platform: "1", sequence_number: 3 },
+      { station_name: "New Barrackpur", station_code: "NBPR", arrival_time: "09:35", departure_time: "09:36", distance_km: 22, platform: "2", sequence_number: 4 },
+      { station_name: "Barasat", station_code: "BT", arrival_time: "09:50", departure_time: null, distance_km: 32, platform: "1", sequence_number: 5 }
+    ]
+  },
+  {
+    train_number: "30611",
+    train_name: "Howrah-Burdwan Local",
+    from_station: "Howrah Junction",
+    to_station: "Burdwan",
+    current_station: "Bandel Junction",
+    next_station: "Naihati",
+    current_lat: 22.9318,
+    current_lng: 88.3777,
+    delay_minutes: 5,
+    status: "delayed",
+    route: [
+      { station_name: "Howrah Junction", station_code: "HWH", arrival_time: null, departure_time: "07:00", distance_km: 0, platform: "20", sequence_number: 1 },
+      { station_name: "Bally", station_code: "BLY", arrival_time: "07:08", departure_time: "07:09", distance_km: 4, platform: "2", sequence_number: 2 },
+      { station_name: "Bandel Junction", station_code: "BDC", arrival_time: "07:45", departure_time: "07:47", distance_km: 42, platform: "3", sequence_number: 3 },
+      { station_name: "Naihati", station_code: "NH", arrival_time: "08:05", departure_time: "08:06", distance_km: 52, platform: "2", sequence_number: 4 },
+      { station_name: "Burdwan", station_code: "BWN", arrival_time: "09:15", departure_time: null, distance_km: 105, platform: "5", sequence_number: 5 }
+    ]
+  },
+  {
+    train_number: "37811",
+    train_name: "Howrah-Kharagpur Local",
+    from_station: "Howrah Junction",
+    to_station: "Kharagpur",
+    current_station: "Santragachi",
+    next_station: "Uluberia",
+    current_lat: 22.5854,
+    current_lng: 88.2741,
+    delay_minutes: 0,
+    status: "on-time",
+    route: [
+      { station_name: "Howrah Junction", station_code: "HWH", arrival_time: null, departure_time: "06:00", distance_km: 0, platform: "22", sequence_number: 1 },
+      { station_name: "Santragachi", station_code: "SRC", arrival_time: "06:10", departure_time: "06:11", distance_km: 5, platform: "2", sequence_number: 2 },
+      { station_name: "Uluberia", station_code: "ULU", arrival_time: "06:30", departure_time: "06:32", distance_km: 18, platform: "1", sequence_number: 3 },
+      { station_name: "Mecheda", station_code: "MCA", arrival_time: "07:05", departure_time: "07:06", distance_km: 45, platform: "1", sequence_number: 4 },
+      { station_name: "Kharagpur", station_code: "KGP", arrival_time: "08:00", departure_time: null, distance_km: 118, platform: "7", sequence_number: 5 }
+    ]
   }
 ];
